@@ -2,7 +2,6 @@
 import xml.dom.minidom
 import sys
 import getopt
-import time
 import csv
 try:
     opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
@@ -35,12 +34,6 @@ with open(outputfile, 'w') as csvfile:
         name = ''
         nameaccuracy = ''
         cpe = ''
-        state = ''
-        commonName = ''
-        organizationName = ''
-        countryName = ''
-        notBefore = ''
-        notAfter = ''
         addresses = host.getElementsByTagName("address")
         ip = addresses[0].getAttribute("addr")                         # Get IP address from addr element
         oss = host.getElementsByTagName("os")

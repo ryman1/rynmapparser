@@ -61,6 +61,7 @@ with open(outputfile, 'w') as csvfile:
                         cpe = osclass.getElementsByTagName("cpe")[0].childNodes[0].nodeValue
                     except:
                         pass
+<<<<<<< HEAD
 
             for osmatches in os.getElementsByTagName("osmatch"):
                  name = osmatches.getAttribute("name")
@@ -73,3 +74,17 @@ with open(outputfile, 'w') as csvfile:
     for row in output:
         csvout.writerow(row)
         print row
+=======
+
+            for osmatches in os.getElementsByTagName("osmatch"):
+                 name = osmatches.getAttribute("name")
+                 nameaccuracy = osmatches.getAttribute("accuracy")
+
+            for st in host.getElementsByTagName("status"):
+                state = st.getAttribute("state")
+        output.append([str(state),str(ip),str(type),str(vendor),str(osfamily),str(osgen),str(osclassaccuracy),str(name),str(cpe),str(nameaccuracy)])
+    for row in output:
+        if row[0] is not '':
+            csvout.writerow(row)
+            print row
+>>>>>>> Output_filtered

@@ -1,8 +1,12 @@
 #!/usr/bin/env python
+
 import xml.dom.minidom
 import sys
 import getopt
 import csv
+
+testtag = 'os'
+
 class Parser:
     def __init__(self, xmlfile):
         try:
@@ -14,19 +18,35 @@ class Parser:
             sys.exit(2)
         self.__hostnodes = self.__dom.getElementsByTagName("host") 
     
-    def hostinfo(self, tagin):
-        #get all sub-attributes if a parent tag is selected
-        for host in self.__hostnodes:
-            try:
-                tag = host.getElementsByTagName(tagin)[0]
-            
-                
-                for attribute in tag.attributes.items():
-                    infodict.update({tagin + '.' + str(attribute[0]):attribute[1]})
-                print str(infodict)
-            except IndexError:
-                pass
+    def get_node_info(self):
+        print 'test'
         
+    def get_all_tag_info(self, tagin, parent = None):
+        if parent == None:
+            parent = self.__hostnodes
+        #get all attributes and sub-attributes if a parent tag is selected
+        if blah blah hasChildNodes():
+            for nodes in parent:
+                try:
+                    tag = nodes.getElementsByTagName(tagin)[0]
+                    for attribute in tag.attributes.items():
+                        infodict.update({tagin + '.' + str(attribute[0]):attribute[1]})
+                except IndexError:
+                    print 'pass'
+                    pass
+                #find sub-tags and dive in to them
+                for childnode in tag.childNodes:
+                    if childnode.nodeType == 1:
+                        print 'print node type is 1 - diving in to ' + childnode.tagName
+                        print 'childnode.tagName ' + childnode.tagName
+                        print 'childnode.parentNode.tagName ' + childnode.parentNode.tagName
+                        print 'childnode.getAttribute("portid") ' + childnode.getAttribute("portid")
+                        #self.get_all_tag_info(childnode.tagName, childnode.parentNode.getChildNodes)
+                    else:
+                        print "node type not == 1"
+                    print str(infodict)
+
+
     def returncols(self, fieldlist):
         #addressdict can store multiple types of addresses i.e. ipv4, ipv6, mac, etc.
         addressesdict = {}
@@ -55,8 +75,8 @@ class Parser:
 opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
 
 infodict = {}
-myparser = Parser('U:\\My Documents\\Ulmer\\allports3.original.xml')
-myparser.hostinfo('status')
+myparser = Parser('test.xml')
+myparser.get_all_tag_info(testtag)
 sys.exit()
 '''except getopt.GetoptError:
     print 'rynnmapparser.py -i <inputfile> -o [outputfile] '

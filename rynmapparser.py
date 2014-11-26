@@ -21,31 +21,37 @@ class Parser:
     def get_node_info(self):
         print 'test'
         
-    def get_all_tag_info(self, tagin, parent = None):
-        if parent == None:
-            parent = self.__hostnodes
-        #get all attributes and sub-attributes if a parent tag is selected
-        if blah blah hasChildNodes():
-            for nodes in parent:
-                try:
-                    tag = nodes.getElementsByTagName(tagin)[0]
-                    for attribute in tag.attributes.items():
-                        infodict.update({tagin + '.' + str(attribute[0]):attribute[1]})
-                except IndexError:
-                    print 'pass'
-                    pass
-                #find sub-tags and dive in to them
-                for childnode in tag.childNodes:
-                    if childnode.nodeType == 1:
-                        print 'print node type is 1 - diving in to ' + childnode.tagName
-                        print 'childnode.tagName ' + childnode.tagName
-                        print 'childnode.parentNode.tagName ' + childnode.parentNode.tagName
-                        print 'childnode.getAttribute("portid") ' + childnode.getAttribute("portid")
-                        #self.get_all_tag_info(childnode.tagName, childnode.parentNode.getChildNodes)
-                    else:
-                        print "node type not == 1"
-                    print str(infodict)
-
+    def get_all_tag_info(self, tagtogather = 'all', nodes = None):
+        '''if parent == None:
+            parent = self.__hostnodes'''
+        if nodes == None:
+            nodes = self.__hostnodes
+            
+        for node in nodes:
+            #gather all sub-elements that have the tag that's specified. 
+            #if a tag was not specified, gather all child elements
+            if tagtogather == 'all':
+                #if the node we're looking at is not a newline
+                if node.nodeType == 1:
+                    elementstogather = node.childNodes
+            else: 
+                elementstogather = node.getElementsByTagName(tagtogather)
+                
+            #go through each of the elements gathered 
+            for tagelement in elementstogather:
+                #if the element we're looking at is not just a newline
+                if tagelement.nodeType == 1:
+                    #and has attributes
+                    if tagelement.hasAttributes():
+                        #add each of the attributes to the dictionary.
+                        for attribute in tagelement.attributes.items():
+                            infodict.update({tagtogather + '.' + str(attribute[0]):str(attribute[1])})
+                    #if there are child nodes, dive in to them just like we did for the parent here.
+                    if tagelement.hasChildNodes():
+                        self.get_all_tag_info('all', tagelement.childNodes)
+        print str(infodict)        
+            
+            
 
     def returncols(self, fieldlist):
         #addressdict can store multiple types of addresses i.e. ipv4, ipv6, mac, etc.

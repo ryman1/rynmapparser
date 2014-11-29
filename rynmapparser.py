@@ -19,11 +19,7 @@ class Parser:
         self.__hostnodes = self.__dom.getElementsByTagName("host") 
     
     def get_host_ip(self, nodein):
-        print 'type' + str(type(nodein))
-        print 1
         n = nodein
-        print 'nodein.tagName' + str(nodein.tagName)
-        print 'n.tagName' + str(n.tagName)
         while str(n.tagName) != "host":
             n = n.parentNode
             
@@ -67,7 +63,7 @@ class Parser:
                     if subelement.hasAttributes():
                         #add each of the attributes to the dictionary.
                         for attribute in subelement.attributes.items():
-                            infodict.update({str(parentnodename) + '.' + str(attribute[0]):str(attribute[1])})
+                            infodict.update({str(parentnodename) + '.' + subelement.tagName + '.' + str(attribute[0]):str(attribute[1])})
                     #if there are child nodes, dive in to them just like we did for the parent here.
                     if subelement.hasChildNodes():
                         self.get_all_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName)      
@@ -102,7 +98,7 @@ class Parser:
 opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
 
 infodict = {}
-myparser = Parser('test.xml')
+myparser = Parser('testsmall.xml')
 myparser.get_all_tag_info(testtag)
 print str(infodict)
 

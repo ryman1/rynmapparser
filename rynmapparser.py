@@ -25,8 +25,6 @@ class Parser:
         print 'nodein.tagName' + str(nodein.tagName)
         print 'n.tagName' + str(n.tagName)
         while str(n.tagName) != "host":
-            print n.tagName
-            print 2
             n = n.parentNode
             
         for a in n.getElementsByTagName('address'):
@@ -45,54 +43,34 @@ class Parser:
         
         
     def get_all_tag_info(self, tagtogather = 'all', nodeslisttocomb = None, parentnodename = None):
-        '''if parent == None:
-            parent = self.__hostnodes'''
         if nodeslisttocomb == None:
-            print "-1"
             nodeslisttocomb = self.__hostnodes
-            
             
         for node in nodeslisttocomb:
             if nodeslisttocomb == self.__hostnodes:
-                print 'ttt' + str(type(node))
-                print node.tagName
-                parentip = self.get_host_ip(node)
-                print 'parentip = ' + parentip
-            print 1
+                parentnodename = self.get_host_ip(node)
             #gather all sub-elements that have the tag that's specified. 
             #if a tag was not specified, gather all child elements
             if tagtogather == 'all':
-                print 2
                 #and the node we're looking at is not a newline
                 if node.nodeType == 1:
-                    print 3
                     subelementstogothrough = node.childNodes
                     
             else: 
-                print 4
-                
                 subelementstogothrough = node.getElementsByTagName(tagtogather)
-            print "subelementstogothrough length  " + str(len(subelementstogothrough))
                 
             #go through each of the sub-elements gathered 
             for subelement in subelementstogothrough:
-                print 5
                 #if the element we're looking at is not just a newline,
                 if subelement.nodeType == 1:
-                    print 6
                     #and has attributes
                     if subelement.hasAttributes():
-                        print 7
                         #add each of the attributes to the dictionary.
                         for attribute in subelement.attributes.items():
-                            print 8
-                            infodict.update({tagtogather + '.' + str(attribute[0]):str(attribute[1])})
-                            print str(infodict) 
+                            infodict.update({str(parentnodename) + '.' + str(attribute[0]):str(attribute[1])})
                     #if there are child nodes, dive in to them just like we did for the parent here.
                     if subelement.hasChildNodes():
-                        print 9
-                        self.get_all_tag_info('all', [subelement])
-               
+                        self.get_all_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName)      
             
             
 
@@ -126,6 +104,7 @@ opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
 infodict = {}
 myparser = Parser('test.xml')
 myparser.get_all_tag_info(testtag)
+print str(infodict)
 
 sys.exit()
 '''except getopt.GetoptError:

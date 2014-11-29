@@ -18,17 +18,46 @@ class Parser:
             sys.exit(2)
         self.__hostnodes = self.__dom.getElementsByTagName("host") 
     
-    def get_node_info(self):
-        print 'test'
+    def get_host_ip(self, nodein):
+        print 'type' + str(type(nodein))
+        print 1
+        n = nodein
+        print 'nodein.tagName' + str(nodein.tagName)
+        print 'n.tagName' + str(n.tagName)
+        while str(n.tagName) != "host":
+            print n.tagName
+            print 2
+            n = n.parentNode
+            
+        for a in n.getElementsByTagName('address'):
+            if a.getAttribute('addrtype') == 'ipv4':
+                return a.getAttribute('addr')
+            
+            
+    def gather_all_ips(self):
+        ips = []
+        for host in self.__hostnodes:
+            for addresstag in host.getElementsByTagName('address'):
+                if addresstag.getAttribute("addrtype") == 'ipv4':
+                    ips.append(str(addresstag.getAttribute('addr')))
+                    break
+        return ips
         
-    def get_all_tag_info(self, tagtogather = 'all', nodeslisttocomb = None):
+        
+    def get_all_tag_info(self, tagtogather = 'all', nodeslisttocomb = None, parentnodename = None):
         '''if parent == None:
             parent = self.__hostnodes'''
         if nodeslisttocomb == None:
             print "-1"
             nodeslisttocomb = self.__hostnodes
             
+            
         for node in nodeslisttocomb:
+            if nodeslisttocomb == self.__hostnodes:
+                print 'ttt' + str(type(node))
+                print node.tagName
+                parentip = self.get_host_ip(node)
+                print 'parentip = ' + parentip
             print 1
             #gather all sub-elements that have the tag that's specified. 
             #if a tag was not specified, gather all child elements
@@ -41,6 +70,7 @@ class Parser:
                     
             else: 
                 print 4
+                
                 subelementstogothrough = node.getElementsByTagName(tagtogather)
             print "subelementstogothrough length  " + str(len(subelementstogothrough))
                 
@@ -96,6 +126,7 @@ opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
 infodict = {}
 myparser = Parser('test.xml')
 myparser.get_all_tag_info(testtag)
+
 sys.exit()
 '''except getopt.GetoptError:
     print 'rynnmapparser.py -i <inputfile> -o [outputfile] '

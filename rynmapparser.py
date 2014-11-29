@@ -21,35 +21,48 @@ class Parser:
     def get_node_info(self):
         print 'test'
         
-    def get_all_tag_info(self, tagtogather = 'all', nodes = None):
+    def get_all_tag_info(self, tagtogather = 'all', nodeslisttocomb = None):
         '''if parent == None:
             parent = self.__hostnodes'''
-        if nodes == None:
-            nodes = self.__hostnodes
+        if nodeslisttocomb == None:
+            print "-1"
+            nodeslisttocomb = self.__hostnodes
             
-        for node in nodes:
+        for node in nodeslisttocomb:
+            print 1
             #gather all sub-elements that have the tag that's specified. 
             #if a tag was not specified, gather all child elements
             if tagtogather == 'all':
-                #if the node we're looking at is not a newline
+                print 2
+                #and the node we're looking at is not a newline
                 if node.nodeType == 1:
-                    elementstogather = node.childNodes
+                    print 3
+                    subelementstogothrough = node.childNodes
+                    
             else: 
-                elementstogather = node.getElementsByTagName(tagtogather)
+                print 4
+                subelementstogothrough = node.getElementsByTagName(tagtogather)
+            print "subelementstogothrough length  " + str(len(subelementstogothrough))
                 
-            #go through each of the elements gathered 
-            for tagelement in elementstogather:
-                #if the element we're looking at is not just a newline
-                if tagelement.nodeType == 1:
+            #go through each of the sub-elements gathered 
+            for subelement in subelementstogothrough:
+                print 5
+                #if the element we're looking at is not just a newline,
+                if subelement.nodeType == 1:
+                    print 6
                     #and has attributes
-                    if tagelement.hasAttributes():
+                    if subelement.hasAttributes():
+                        print 7
                         #add each of the attributes to the dictionary.
-                        for attribute in tagelement.attributes.items():
+                        for attribute in subelement.attributes.items():
+                            print 8
                             infodict.update({tagtogather + '.' + str(attribute[0]):str(attribute[1])})
+                            print str(infodict) 
                     #if there are child nodes, dive in to them just like we did for the parent here.
-                    if tagelement.hasChildNodes():
-                        self.get_all_tag_info('all', tagelement.childNodes)
-        print str(infodict)        
+                    if subelement.hasChildNodes():
+                        print 9
+                        self.get_all_tag_info('all', [subelement])
+               
             
             
 

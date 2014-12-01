@@ -27,7 +27,8 @@ class Parser:
             if a.getAttribute('addrtype') == 'ipv4':
                 return a.getAttribute('addr')
             
-            
+    def gather_os_info(self):
+        
     def gather_all_ips(self):
         ips = []
         for host in self.__hostnodes:
@@ -38,7 +39,7 @@ class Parser:
         return ips
         
         
-    def get_all_tag_info(self, tagtogather = 'all', nodeslisttocomb = None, parentnodename = None):
+    def get_tag_info(self, tagtogather = 'all', nodeslisttocomb = None, parentnodename = None , recursive = True):
         if nodeslisttocomb == None:
             nodeslisttocomb = self.__hostnodes
             
@@ -66,7 +67,7 @@ class Parser:
                             infodict.update({str(parentnodename) + '.' + subelement.tagName + '.' + str(attribute[0]):str(attribute[1])})
                     #if there are child nodes, dive in to them just like we did for the parent here.
                     if subelement.hasChildNodes():
-                        self.get_all_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName)      
+                        self.get_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName)      
             
             
 
@@ -84,7 +85,7 @@ class Parser:
                             '''if there are multiple addresses of the same type, 
                             keep them in the same cell and separate with a 
                             newline. For instance, if there are multiple ip 
-                            addresses, this will be used.'''
+                            addresses for a given host, this will be used.'''
                             if addressesdict.has_key(addrtype):
                                 addressesdict.update({addrtype : addressesdict[addrtype] + "\n" + address.getAttribute("addr")})
                             else:
@@ -99,7 +100,7 @@ opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
 
 infodict = {}
 myparser = Parser('testsmall.xml')
-myparser.get_all_tag_info(testtag)
+myparser.get_tag_info(testtag)
 print str(infodict)
 
 sys.exit()

@@ -1,0 +1,3 @@
+recursiveness level on get_tag_info()
+wildcard tag matches
+multiple tags in same request

@@ -5,7 +5,7 @@ import sys
 import getopt
 import csv
 
-testtag = 'os'
+testtag = 'os.osmatch.name'
 
 class Parser:
     def __init__(self, xmlfile):
@@ -27,7 +27,7 @@ class Parser:
             if a.getAttribute('addrtype') == 'ipv4':
                 return a.getAttribute('addr')
             
-    def gather_os_info(self):
+    #def gather_os_info(self):
         
     def gather_all_ips(self):
         ips = []
@@ -39,7 +39,7 @@ class Parser:
         return ips
         
         
-    def get_tag_info(self, tagtogather = 'all', nodeslisttocomb = None, parentnodename = None , recursive = True):
+    def get_tag_info(self, tagstogather = 'all', nodeslisttocomb = None, parentnodename = None , recursive = True):
         if nodeslisttocomb == None:
             nodeslisttocomb = self.__hostnodes
             
@@ -48,13 +48,26 @@ class Parser:
                 parentnodename = self.get_host_ip(node)
             #gather all sub-elements that have the tag that's specified. 
             #if a tag was not specified, gather all child elements
-            if tagtogather == 'all':
+            if tagstogather == 'all':
                 #and the node we're looking at is not a newline
                 if node.nodeType == 1:
                     subelementstogothrough = node.childNodes
-                    
             else: 
-                subelementstogothrough = node.getElementsByTagName(tagtogather)
+                #process a dotted tag request i.e. "os.osmatch.osclass" or "status"
+                for tag in tagstogather:
+                    subelementstogothrough = node
+                    attributetogather = []
+                    for tagsubcomponent in tag.split('.'):
+                        #detect if we're at an attribute insteaad of a tag. This if statement should probably be retooled so it doesn't mess up if there's an attribute with a tag name.
+                        if subelementstogothrough.getAttribute(tagsubcomponent):
+                            attributetogather.append(tagsubcomponent)
+                            break
+                        else:
+                            #dig further in to the dotted tag request
+                            subelementstogothrough = subelementstogothrough.getElementsByTagName(tagsubcomponent)
+                            parentnodename = parentnodename + '.' + tagsubcomponent
+
+                            
                 
             #go through each of the sub-elements gathered 
             for subelement in subelementstogothrough:
@@ -62,12 +75,15 @@ class Parser:
                 if subelement.nodeType == 1:
                     #and has attributes
                     if subelement.hasAttributes():
-                        #add each of the attributes to the dictionary.
-                        for attribute in subelement.attributes.items():
+                        if recursive == True:
+                            #add each of the attributes to the dictionary.
+                            for attribute in subelement.attributes.items():
+                                infodict.update({str(parentnodename) + '.' + subelement.tagName + '.' + str(attribute[0]):str(attribute[1])})
+                        else:
                             infodict.update({str(parentnodename) + '.' + subelement.tagName + '.' + str(attribute[0]):str(attribute[1])})
-                    #if there are child nodes, dive in to them just like we did for the parent here.
-                    if subelement.hasChildNodes():
-                        self.get_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName)      
+                    #If the function was called with "recursive = True" and if there are child nodes, dive in to them just like we did for the parent here .
+                    if recursive and subelement.hasChildNodes():
+                        self.get_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName, True)      
             
             
 

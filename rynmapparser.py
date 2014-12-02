@@ -5,7 +5,7 @@ import sys
 import getopt
 import csv
 
-testtag = 'os.osmatch.name'
+testtag = ['address.addr']
 
 class Parser:
     def __init__(self, xmlfile):
@@ -38,7 +38,6 @@ class Parser:
                     break
         return ips
         
-        
     def get_tag_info(self, tagstogather = 'all', nodeslisttocomb = None, parentnodename = None , recursive = True):
         if nodeslisttocomb == None:
             nodeslisttocomb = self.__hostnodes
@@ -55,19 +54,20 @@ class Parser:
             else: 
                 #process a dotted tag request i.e. "os.osmatch.osclass" or "status"
                 for tag in tagstogather:
-                    subelementstogothrough = node
+                    subelementstogothrough = [node]
                     attributetogather = []
                     for tagsubcomponent in tag.split('.'):
-                        #detect if we're at an attribute insteaad of a tag. This if statement should probably be retooled so it doesn't mess up if there's an attribute with a tag name.
-                        if subelementstogothrough.getAttribute(tagsubcomponent):
-                            attributetogather.append(tagsubcomponent)
-                            break
-                        else:
-                            #dig further in to the dotted tag request
-                            subelementstogothrough = subelementstogothrough.getElementsByTagName(tagsubcomponent)
-                            parentnodename = parentnodename + '.' + tagsubcomponent
-
-                            
+                        for subelement in subelementstogothrough:
+                            #detect if we're at an attribute insteaad of a tag. This if statement should probably be retooled so it doesn't mess up if there's an attribute with a tag name.
+                            #also need to be able to gather multiple identical tags. i.e. <address> and <address>
+                            if len(subelement.getElementsByTagName(tagsubcomponent)) > 0:
+                                #dig further in to the dotted tag request
+                                subelementstogothrough = subelement.getElementsByTagName(tagsubcomponent)
+                                parentnodename = parentnodename + '.' + tagsubcomponent
+                            else:    
+                                if subelement.getAttribute(tagsubcomponent): ############################ issue is here###### this loop is not always throwing an exception when  
+                                    attributetogather.append(tagsubcomponent)
+                                    break
                 
             #go through each of the sub-elements gathered 
             for subelement in subelementstogothrough:
@@ -75,17 +75,16 @@ class Parser:
                 if subelement.nodeType == 1:
                     #and has attributes
                     if subelement.hasAttributes():
-                        if recursive == True:
+                        if recursive:
                             #add each of the attributes to the dictionary.
                             for attribute in subelement.attributes.items():
                                 infodict.update({str(parentnodename) + '.' + subelement.tagName + '.' + str(attribute[0]):str(attribute[1])})
                         else:
-                            infodict.update({str(parentnodename) + '.' + subelement.tagName + '.' + str(attribute[0]):str(attribute[1])})
+                            for attribute in attributetogather:
+                                infodict.update({str(parentnodename) + '.' + str(attribute):str(subelement.getAttribute(attribute))})
                     #If the function was called with "recursive = True" and if there are child nodes, dive in to them just like we did for the parent here .
                     if recursive and subelement.hasChildNodes():
                         self.get_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName, True)      
-            
-            
 
     def returncols(self, fieldlist):
         #addressdict can store multiple types of addresses i.e. ipv4, ipv6, mac, etc.
@@ -116,7 +115,7 @@ opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
 
 infodict = {}
 myparser = Parser('testsmall.xml')
-myparser.get_tag_info(testtag)
+myparser.get_tag_info(testtag, None, None, False)
 print str(infodict)
 
 sys.exit()

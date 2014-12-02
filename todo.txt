@@ -1,3 +1,4 @@
 recursiveness level on get_tag_info()
 wildcard tag matches
 multiple tags in same request
+need to be able to gather multiple identical tags. i.e. <address> and <address>

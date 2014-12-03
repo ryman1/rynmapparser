@@ -5,7 +5,8 @@ import sys
 import getopt
 import csv
 
-testtag = ['address.addr']
+filexml = 'test.xml'
+testtag = ['address.addr', 'os.osmatch.name']
 
 class Parser:
     def __init__(self, xmlfile):
@@ -25,7 +26,7 @@ class Parser:
             
         for a in n.getElementsByTagName('address'):
             if a.getAttribute('addrtype') == 'ipv4':
-                return a.getAttribute('addr')
+                return str(a.getAttribute('addr'))
             
     #def gather_os_info(self):
         
@@ -60,16 +61,27 @@ class Parser:
                         for subelement in subelementstogothrough:
                             #detect if we're at an attribute insteaad of a tag. This if statement should probably be retooled so it doesn't mess up if there's an attribute with a tag name.
                             #also need to be able to gather multiple identical tags. i.e. <address> and <address>
+
+                            #if the selected subelement (i.e. a "host" element or an "os" element) has any children that
+                            # match the part of the dotted tag address we're looking for(i.e. "address" or  "osmatch")
                             if len(subelement.getElementsByTagName(tagsubcomponent)) > 0:
                                 #dig further in to the dotted tag request
                                 subelementstogothrough = subelement.getElementsByTagName(tagsubcomponent)
+                                #now "subelementstogothrough" only contains the child objects we're digging for in the
+                                # current parent node (i.e. all the "address"-tagged elements under host 10.0.0.1)
                                 parentnodename = parentnodename + '.' + tagsubcomponent
-                            else:    
-                                if subelement.getAttribute(tagsubcomponent): ############################ issue is here###### this loop is not always throwing an exception when  
-                                    attributetogather.append(tagsubcomponent)
+                            else:
+                                #if there are no selected subelements that have the tag we're looking for then
+                                #it must be the Attribute were looking for (unless the dotted tag address is typoed).
+                                if subelement.getAttribute(tagsubcomponent):
+                                    ####testing
+                                    infodict.update({str(parentnodename) + '.' + str(tagsubcomponent):str(subelement.getAttribute(tagsubcomponent))})
+                                    ####testing
+                                    parentnodename = self.get_host_ip(node)
                                     break
-                
-            #go through each of the sub-elements gathered 
+
+        #############Recursive/wildcard code - Doesn't get along with the tag method at the moment.
+'''            #go through each of the sub-elements gathered
             for subelement in subelementstogothrough:
                 #if the element we're looking at is not just a newline,
                 if subelement.nodeType == 1:
@@ -78,13 +90,15 @@ class Parser:
                         if recursive:
                             #add each of the attributes to the dictionary.
                             for attribute in subelement.attributes.items():
+                                print '1 attribute = ' + str(attribute)
                                 infodict.update({str(parentnodename) + '.' + subelement.tagName + '.' + str(attribute[0]):str(attribute[1])})
                         else:
                             for attribute in attributetogather:
+                                print '2 attribute = ' + str(attribute)
                                 infodict.update({str(parentnodename) + '.' + str(attribute):str(subelement.getAttribute(attribute))})
                     #If the function was called with "recursive = True" and if there are child nodes, dive in to them just like we did for the parent here .
                     if recursive and subelement.hasChildNodes():
-                        self.get_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName, True)      
+                        self.get_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName, True)'''
 
     def returncols(self, fieldlist):
         #addressdict can store multiple types of addresses i.e. ipv4, ipv6, mac, etc.
@@ -114,7 +128,7 @@ class Parser:
 opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
 
 infodict = {}
-myparser = Parser('testsmall.xml')
+myparser = Parser(filexml)
 myparser.get_tag_info(testtag, None, None, False)
 print str(infodict)
 

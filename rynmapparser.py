@@ -5,8 +5,12 @@ import sys
 import getopt
 import csv
 
-filexml = 'test.xml'
-testtag = ['address.addr', 'os.osmatch.name']
+filexml = 'testsmall.xml'
+# testtag = ['address.addr', 'os.osmatch.name', 'address.addrtype']
+testtag = ['address', 'os', 'uptime']
+# testtag = ['tcptssequence']
+# testtag = 'all'
+# testtag = ['ports.extraports.extrareasons.reason', 'ports.extraports.extrareasons.reason']
 
 class Parser:
     def __init__(self, xmlfile):
@@ -17,19 +21,19 @@ class Parser:
             sys.exit(1)
         except:
             sys.exit(2)
-        self.__hostnodes = self.__dom.getElementsByTagName("host") 
-    
+        self.__hostnodes = self.__dom.getElementsByTagName("host")
+
     def get_host_ip(self, nodein):
         n = nodein
         while str(n.tagName) != "host":
             n = n.parentNode
-            
+
         for a in n.getElementsByTagName('address'):
             if a.getAttribute('addrtype') == 'ipv4':
                 return str(a.getAttribute('addr'))
-            
+
     #def gather_os_info(self):
-        
+
     def gather_all_ips(self):
         ips = []
         for host in self.__hostnodes:
@@ -38,67 +42,93 @@ class Parser:
                     ips.append(str(addresstag.getAttribute('addr')))
                     break
         return ips
-        
+
+    def tag_or_attribute(self, dottedstring, elements):
+        tagsubcomponentsprocessed = 0
+        for tagsubcomponent in dottedstring.split('.'):
+            for subelement in elements:
+                if subelement.getElementsByTagName(tagsubcomponent):
+                    elements = subelement.getElementsByTagName(tagsubcomponent)
+                    return 'tag'
+                elif subelement.getAttribute(tagsubcomponent):
+                    return 'attribute'
+                else:
+                    return 'neither'
+
     def get_tag_info(self, tagstogather = 'all', nodeslisttocomb = None, parentnodename = None , recursive = True):
-        if nodeslisttocomb == None:
+        if nodeslisttocomb is None:
             nodeslisttocomb = self.__hostnodes
-            
+        attributetogather = []
         for node in nodeslisttocomb:
             if nodeslisttocomb == self.__hostnodes:
                 parentnodename = self.get_host_ip(node)
-            #gather all sub-elements that have the tag that's specified. 
-            #if a tag was not specified, gather all child elements
+
+            ########newstuff
+
+
+
+
+            #if "tagstogather" == all, gather all sub-attributes and sub-elements (subelements only if recursive is enabled)
             if tagstogather == 'all':
-                #and the node we're looking at is not a newline
+                #If the node we're looking at is not a newline
                 if node.nodeType == 1:
                     subelementstogothrough = node.childNodes
-            else: 
-                #process a dotted tag request i.e. "os.osmatch.osclass" or "status"
-                for tag in tagstogather:
+
+                    #############Recursive/wildcard code - Doesn't get along with the tag method at the moment.
+
+                    #go through each of the sub-elements gathered i.e. "address", "os", "uptime"
+                    for subelement in subelementstogothrough:
+                        #if the element we're looking at is not just a newline,
+                        if subelement.nodeType == 1:
+                            #and has attributes
+                            if subelement.hasAttributes():
+                                if recursive:
+                                    #add each of the attributes to the dictionary.
+                                    for attribute in subelement.attributes.items():
+                                        infodict.update({str(parentnodename) + '.' + str(subelement.tagName) + '.' + str(attribute[0]):str(attribute[1])})
+                                else:
+                                    for attribute in attributetogather:
+                                        infodict.update({str(parentnodename) + '.' + str(attribute):str(subelement.getAttribute(attribute))})
+                            #If the function was called with "recursive = True" and if there are child nodes, dive in to
+                            #them just like we did for the parent here .
+                            if recursive and subelement.hasChildNodes():
+                                self.get_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName, True)
+
+
+
+            #add intelligent code to this else loop to make it gather all
+            #attributes of a tag if a specific attribute was not specified.
+
+
+            #process a dotted tag/attribute request i.e. "os.osmatch.osclass" or "status"
+            #if the request is for a tag (not an attribute), get that tag's attributes (and subelements if recursive
+            #is enabled)
+            else:
+                for dottedtag in tagstogather:
                     subelementstogothrough = [node]
-                    attributetogather = []
-                    for tagsubcomponent in tag.split('.'):
-                        for subelement in subelementstogothrough:
-                            #detect if we're at an attribute insteaad of a tag. This if statement should probably be retooled so it doesn't mess up if there's an attribute with a tag name.
-                            #also need to be able to gather multiple identical tags. i.e. <address> and <address>
+                    toa = self.tag_or_attribute(dottedtag, subelementstogothrough)
+                    for subelement in subelementstogothrough:
+                        if toa == 'tag':
+                            #add this element's attributes to the dictionary
+                            #dig further in to the dotted tag request
+                            se = subelement
+                            for tag in dottedtag.split('.'):
+                                se = se.getElementsByTagName(tag)
+                                parentnodename = parentnodename + '.' + tag
+                            for see in se:
+                                for attr in see.attributes.items():
+                                    infodict.update({str(parentnodename) + '.' + str(attr[0]): str(attr[1])})
+                                self.get_tag_info('all', se, parentnodename, recursive)
+                            parentnodename = self.get_host_ip(node)
+                        elif toa == 'attribute':
+                            if subelement.getAttribute(dottedtag.split('.')[-1]):
+                                ####testing
+                                infodict.update({str(parentnodename) + '.' + str(dottedtag.split('.')[-1]):str(subelement.getAttribute(dottedtag.split('.')[-1]))})
+                                ####testing
+                                parentnodename = self.get_host_ip(node)
+                                break
 
-                            #if the selected subelement (i.e. a "host" element or an "os" element) has any children that
-                            # match the part of the dotted tag address we're looking for(i.e. "address" or  "osmatch")
-                            if len(subelement.getElementsByTagName(tagsubcomponent)) > 0:
-                                #dig further in to the dotted tag request
-                                subelementstogothrough = subelement.getElementsByTagName(tagsubcomponent)
-                                #now "subelementstogothrough" only contains the child objects we're digging for in the
-                                # current parent node (i.e. all the "address"-tagged elements under host 10.0.0.1)
-                                parentnodename = parentnodename + '.' + tagsubcomponent
-                            else:
-                                #if there are no selected subelements that have the tag we're looking for then
-                                #it must be the Attribute were looking for (unless the dotted tag address is typoed).
-                                if subelement.getAttribute(tagsubcomponent):
-                                    ####testing
-                                    infodict.update({str(parentnodename) + '.' + str(tagsubcomponent):str(subelement.getAttribute(tagsubcomponent))})
-                                    ####testing
-                                    parentnodename = self.get_host_ip(node)
-                                    break
 
-        #############Recursive/wildcard code - Doesn't get along with the tag method at the moment.
-            '''            #go through each of the sub-elements gathered
-            for subelement in subelementstogothrough:
-                #if the element we're looking at is not just a newline,
-                if subelement.nodeType == 1:
-                    #and has attributes
-                    if subelement.hasAttributes():
-                        if recursive:
-                            #add each of the attributes to the dictionary.
-                            for attribute in subelement.attributes.items():
-                                print '1 attribute = ' + str(attribute)
-                                infodict.update({str(parentnodename) + '.' + subelement.tagName + '.' + str(attribute[0]):str(attribute[1])})
-                        else:
-                            for attribute in attributetogather:
-                                print '2 attribute = ' + str(attribute)
-                                infodict.update({str(parentnodename) + '.' + str(attribute):str(subelement.getAttribute(attribute))})
-                    #If the function was called with "recursive = True" and if there are child nodes, dive in to them just like we did for the parent here .
-                    if recursive and subelement.hasChildNodes():
-                        self.get_tag_info('all', [subelement], parentnodename + '.' + subelement.tagName, True)'''
 
     def returncols(self, fieldlist):
         #addressdict can store multiple types of addresses i.e. ipv4, ipv6, mac, etc.
@@ -123,13 +153,14 @@ class Parser:
                         columndict.update({field:host.getElementByTagName(field)})
                 except:
                     pass
-                
+
 
 opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
 
 infodict = {}
 myparser = Parser(filexml)
-myparser.get_tag_info(testtag, None, None, False)
+myparser.get_tag_info(testtag, None, None, True)
+# myparser.get_tag_info()
 print str(infodict)
 
 sys.exit()

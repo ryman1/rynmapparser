@@ -81,7 +81,7 @@ class Parser:
                                     break
 
         #############Recursive/wildcard code - Doesn't get along with the tag method at the moment.
-'''            #go through each of the sub-elements gathered
+            '''            #go through each of the sub-elements gathered
             for subelement in subelementstogothrough:
                 #if the element we're looking at is not just a newline,
                 if subelement.nodeType == 1:

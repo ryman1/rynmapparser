@@ -6,11 +6,10 @@ import getopt
 import csv
 
 filexml = 'testsmall.xml'
-# testtag = ['address.addr', 'os.osmatch.name', 'address.addrtype']
-testtag = ['address', 'os', 'uptime']
+testtag = ['address.addr', 'os.osmatch.name']
+# testtag = ['address', 'os', 'uptime']
 # testtag = ['tcptssequence']
-# testtag = 'all'
-# testtag = ['ports.extraports.extrareasons.reason', 'ports.extraports.extrareasons.reason']
+# testtag = ['ports.extraports.extrareasons.reason', 'ports.extraports.extrareasons.count']
 
 class Parser:
     def __init__(self, xmlfile):
@@ -44,16 +43,15 @@ class Parser:
         return ips
 
     def tag_or_attribute(self, dottedstring, elements):
-        tagsubcomponentsprocessed = 0
-        for tagsubcomponent in dottedstring.split('.'):
-            for subelement in elements:
-                if subelement.getElementsByTagName(tagsubcomponent):
-                    elements = subelement.getElementsByTagName(tagsubcomponent)
-                    return 'tag'
-                elif subelement.getAttribute(tagsubcomponent):
-                    return 'attribute'
-                else:
-                    return 'neither'
+        element = elements[0]
+        for tagsubcomponent in dottedstring.split('.')[0:-1]:
+            element = element.getElementsByTagName(tagsubcomponent)[0]
+        if element.getElementsByTagName(dottedstring.split('.')[-1]):
+            return 'tag'
+        elif element.getAttribute(dottedstring.split('.')[-1]):
+            return 'attribute'
+        else:
+            return 'neither'
 
     def get_tag_info(self, tagstogather = 'all', nodeslisttocomb = None, parentnodename = None , recursive = True):
         if nodeslisttocomb is None:
@@ -112,18 +110,24 @@ class Parser:
                             #add this element's attributes to the dictionary
                             #dig further in to the dotted tag request
                             se = subelement
-                            for tag in dottedtag.split('.'):
-                                se = se.getElementsByTagName(tag)
+                            for tag in dottedtag.split('.')[0:-1]:
                                 parentnodename = parentnodename + '.' + tag
-                            for see in se:
-                                for attr in see.attributes.items():
-                                    infodict.update({str(parentnodename) + '.' + str(attr[0]): str(attr[1])})
-                                self.get_tag_info('all', se, parentnodename, recursive)
+                                se = se.getElementsByTagName(tag)[0]
+                            for attr in se.attributes.items():
+                                infodict.update({str(parentnodename) + '.' + dottedtag.split('.')[-1]: str(attr[1])})
+                            self.get_tag_info('all', [se], parentnodename, recursive)
                             parentnodename = self.get_host_ip(node)
+
+
+
                         elif toa == 'attribute':
-                            if subelement.getAttribute(dottedtag.split('.')[-1]):
+                            se = subelement
+                            for tag in dottedtag.split('.')[0:-1]:
+                                se = se.getElementsByTagName(tag)[0]
+                                parentnodename = parentnodename + '.' + tag
+                            if se.getAttribute(dottedtag.split('.')[-1]):
                                 ####testing
-                                infodict.update({str(parentnodename) + '.' + str(dottedtag.split('.')[-1]):str(subelement.getAttribute(dottedtag.split('.')[-1]))})
+                                infodict.update({str(parentnodename) + '.' + str(dottedtag.split('.')[-1]):str(se.getAttribute(dottedtag.split('.')[-1]))})
                                 ####testing
                                 parentnodename = self.get_host_ip(node)
                                 break
@@ -159,7 +163,7 @@ opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["inputfile=","outputfile="])
 
 infodict = {}
 myparser = Parser(filexml)
-myparser.get_tag_info(testtag, None, None, True)
+myparser.get_tag_info(testtag, None, None, False)
 # myparser.get_tag_info()
 print str(infodict)
 

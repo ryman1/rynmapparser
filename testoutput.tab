@@ -1,0 +1,236 @@
+open	22	tcp	13663	Cisco 2950, 2960, 3000-series, 4510R, 6000-series, or 6500-series switch (IOS 12.1 or 12.2)	100	Cisco	IOS	switch	12.X
+open	22	tcp	76002	VMware ESXi Server 5.0	98	VMware	ESX Server	specialized	5.X
+			75641	VMware ESXi Server 4.1	95	VMware	ESX Server	specialized	4.X
+			22318	FreeBSD 7.0-RELEASE-p1 - 10.0-CURRENT	94	FreeBSD	FreeBSD	general purpose	7.X
+					94	FreeBSD	FreeBSD	general purpose	8.X
+					94	FreeBSD	FreeBSD	general purpose	9.X
+					94	FreeBSD	FreeBSD	general purpose	10.X
+			22781	FreeBSD 8.0-BETA2 - 9.1-RELEASE	93	FreeBSD	FreeBSD	general purpose	8.X
+					93	FreeBSD	FreeBSD	general purpose	9.X
+			21784	FreeNAS 0.686 (FreeBSD 6.2-RELEASE) or VMware ESXi Server 3.0 - 4.0	93	FreeBSD	FreeBSD	storage-misc	6.X
+					93	VMware	ESX Server	specialized	3.X
+					93	VMware	ESX Server	specialized	4.X
+			75528	VMware ESX Server 4.0.1	93	VMware	ESX Server	specialized	4.X
+			20984	FreeBSD 5.2.1-RELEASE	93	FreeBSD	FreeBSD	general purpose	5.X
+			21006	FreeBSD 5.3 or 5.5 (x86)	93	FreeBSD	FreeBSD	general purpose	5.X
+			21845	FreeNAS 0.69.2 (FreeBSD 6.3-STABLE - 6.4-RELEASE)	93	FreeBSD	FreeBSD	storage-misc	6.X
+			75912	VMware ESXi Server 4.1.0	93	VMware	ESX Server	specialized	4.X
+open	80	tcp	76002	VMware ESXi Server 5.0	99	VMware	ESX Server	specialized	5.X
+			75641	VMware ESXi Server 4.1	95	VMware	ESX Server	specialized	4.X
+			22318	FreeBSD 7.0-RELEASE-p1 - 10.0-CURRENT	94	FreeBSD	FreeBSD	general purpose	7.X
+					94	FreeBSD	FreeBSD	general purpose	8.X
+					94	FreeBSD	FreeBSD	general purpose	9.X
+					94	FreeBSD	FreeBSD	general purpose	10.X
+			22781	FreeBSD 8.0-BETA2 - 9.1-RELEASE	93	FreeBSD	FreeBSD	general purpose	8.X
+					93	FreeBSD	FreeBSD	general purpose	9.X
+			21784	FreeNAS 0.686 (FreeBSD 6.2-RELEASE) or VMware ESXi Server 3.0 - 4.0	93	FreeBSD	FreeBSD	storage-misc	6.X
+					93	VMware	ESX Server	specialized	3.X
+					93	VMware	ESX Server	specialized	4.X
+			75528	VMware ESX Server 4.0.1	93	VMware	ESX Server	specialized	4.X
+			20984	FreeBSD 5.2.1-RELEASE	93	FreeBSD	FreeBSD	general purpose	5.X
+			21006	FreeBSD 5.3 or 5.5 (x86)	93	FreeBSD	FreeBSD	general purpose	5.X
+			21845	FreeNAS 0.69.2 (FreeBSD 6.3-STABLE - 6.4-RELEASE)	93	FreeBSD	FreeBSD	storage-misc	6.X
+			75912	VMware ESXi Server 4.1.0	93	VMware	ESX Server	specialized	4.X
+open	53	tcp	54657	Microsoft Windows 7 SP0 - SP1, Windows Server 2008 SP1, or Windows 8	100	Microsoft	Windows	general purpose	7
+					100	Microsoft	Windows	general purpose	2008
+					100	Microsoft	Windows	general purpose	8
+open	80	tcp	76002	VMware ESXi Server 5.0	96	VMware	ESX Server	specialized	5.X
+			75912	VMware ESXi Server 4.1.0	95	VMware	ESX Server	specialized	4.X
+			75641	VMware ESXi Server 4.1	93	VMware	ESX Server	specialized	4.X
+			22318	FreeBSD 7.0-RELEASE-p1 - 10.0-CURRENT	92	FreeBSD	FreeBSD	general purpose	7.X
+					92	FreeBSD	FreeBSD	general purpose	8.X
+					92	FreeBSD	FreeBSD	general purpose	9.X
+					92	FreeBSD	FreeBSD	general purpose	10.X
+			22781	FreeBSD 8.0-BETA2 - 9.1-RELEASE	90	FreeBSD	FreeBSD	general purpose	8.X
+					90	FreeBSD	FreeBSD	general purpose	9.X
+			21784	FreeNAS 0.686 (FreeBSD 6.2-RELEASE) or VMware ESXi Server 3.0 - 4.0	90	FreeBSD	FreeBSD	storage-misc	6.X
+					90	VMware	ESX Server	specialized	3.X
+					90	VMware	ESX Server	specialized	4.X
+			75528	VMware ESX Server 4.0.1	90	VMware	ESX Server	specialized	4.X
+			20984	FreeBSD 5.2.1-RELEASE	90	FreeBSD	FreeBSD	general purpose	5.X
+			21006	FreeBSD 5.3 or 5.5 (x86)	90	FreeBSD	FreeBSD	general purpose	5.X
+			21845	FreeNAS 0.69.2 (FreeBSD 6.3-STABLE - 6.4-RELEASE)	90	FreeBSD	FreeBSD	storage-misc	6.X
+open	23	tcp	13350	Cisco Aironet 350 or 1200 WAP or 831 router (IOS 12.3)	100	Cisco	IOS	router	12.X
+					100	Cisco	IOS	WAP	12.X
+open	22	tcp	46670	Linux 2.6.9 - 2.6.30	100	Linux	Linux	general purpose	2.6.X
+open	80	tcp							
+open	80	tcp							
+open	80	tcp	54500	Microsoft Windows 7 Professional	95	Microsoft	Windows	general purpose	7
+			56039	Microsoft Windows Phone 7.5	94	Microsoft	Windows	phone	Phone
+			56574	Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7	93	Microsoft	Windows	general purpose	Vista
+					93	Microsoft	Windows	general purpose	2008
+					93	Microsoft	Windows	general purpose	7
+			56887	Microsoft Windows Vista SP2, Windows 7 SP1, or Windows Server 2008	93	Microsoft	Windows	general purpose	Vista
+					93	Microsoft	Windows	general purpose	7
+					93	Microsoft	Windows	general purpose	2008
+			56427	Microsoft Windows Vista Home Premium SP1	91	Microsoft	Windows	general purpose	Vista
+			53730	Microsoft Windows Server 2008 SP1	91	Microsoft	Windows	general purpose	2008
+			54788	Microsoft Windows 7 SP1	89	Microsoft	Windows	general purpose	7
+			56494	Microsoft Windows Vista SP0 - SP1	89	Microsoft	Windows	general purpose	Vista
+			56449	Microsoft Windows Vista Home Premium SP1, Windows 7, or Windows Server 2008	87	Microsoft	Windows	general purpose	Vista
+					87	Microsoft	Windows	general purpose	7
+					87	Microsoft	Windows	general purpose	2008
+			54826	Microsoft Windows 7 SP1 or Windows Server 2008 SP1 - SP2	87	Microsoft	Windows	general purpose	7
+					87	Microsoft	Windows	general purpose	2008
+open	22	tcp	38858	Linux 2.6.18 - 2.6.32	96	Linux	Linux	general purpose	2.6.X
+			43805	Linux 2.6.32	96	Linux	Linux	general purpose	2.6.X
+			44376	Linux 2.6.32 - 3.9	95	Linux	Linux	general purpose	2.6.X
+					95	Linux	Linux	general purpose	3.X
+			36687	Linux 2.6.13 - 2.6.32	94	Linux	Linux	general purpose	2.6.X
+			63671	Netgear DG834G WAP or Western Digital WD TV media player	94	Netgear	embedded	WAP	
+					94	Western Digital	embedded	media device	
+			6558	Asus RT-N10 router or AXIS 211A Network Camera (Linux 2.6)	94	Asus	Linux	router	2.6.X
+					94	AXIS	Linux	webcam	2.6.X
+			7376	AXIS 211A Network Camera (Linux 2.6.20)	94	AXIS	Linux	webcam	2.6.X
+			38525	Linux 2.6.18 - 2.6.21	93	Linux	Linux	general purpose	2.6.X
+			37157	Linux 2.6.16	93	Linux	Linux	general purpose	2.6.X
+			41506	Linux 2.6.26	92	Linux	Linux	general purpose	2.6.X
+open	135	tcp	54500	Microsoft Windows 7 Professional	93	Microsoft	Windows	general purpose	7
+			56039	Microsoft Windows Phone 7.5	92	Microsoft	Windows	phone	Phone
+			53602	Microsoft Windows Server 2008 Beta 3	92	Microsoft	Windows	general purpose	2008
+			56574	Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7	92	Microsoft	Windows	general purpose	Vista
+					92	Microsoft	Windows	general purpose	2008
+					92	Microsoft	Windows	general purpose	7
+			56887	Microsoft Windows Vista SP2, Windows 7 SP1, or Windows Server 2008	92	Microsoft	Windows	general purpose	Vista
+					92	Microsoft	Windows	general purpose	7
+					92	Microsoft	Windows	general purpose	2008
+			56427	Microsoft Windows Vista Home Premium SP1	91	Microsoft	Windows	general purpose	Vista
+			53730	Microsoft Windows Server 2008 SP1	89	Microsoft	Windows	general purpose	2008
+			54788	Microsoft Windows 7 SP1	86	Microsoft	Windows	general purpose	7
+			56494	Microsoft Windows Vista SP0 - SP1	86	Microsoft	Windows	general purpose	Vista
+open	135	tcp	54458	Microsoft Windows 7 or Windows Server 2012	100	Microsoft	Windows	general purpose	7
+					100	Microsoft	Windows	general purpose	2012
+open	135	tcp	54500	Microsoft Windows 7 Professional	95	Microsoft	Windows	general purpose	7
+			56039	Microsoft Windows Phone 7.5	94	Microsoft	Windows	phone	Phone
+			56574	Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7	93	Microsoft	Windows	general purpose	Vista
+					93	Microsoft	Windows	general purpose	2008
+					93	Microsoft	Windows	general purpose	7
+			56887	Microsoft Windows Vista SP2, Windows 7 SP1, or Windows Server 2008	93	Microsoft	Windows	general purpose	Vista
+					93	Microsoft	Windows	general purpose	7
+					93	Microsoft	Windows	general purpose	2008
+			56427	Microsoft Windows Vista Home Premium SP1	93	Microsoft	Windows	general purpose	Vista
+			53730	Microsoft Windows Server 2008 SP1	91	Microsoft	Windows	general purpose	2008
+			56494	Microsoft Windows Vista SP0 - SP1	89	Microsoft	Windows	general purpose	Vista
+			56449	Microsoft Windows Vista Home Premium SP1, Windows 7, or Windows Server 2008	87	Microsoft	Windows	general purpose	Vista
+					87	Microsoft	Windows	general purpose	7
+					87	Microsoft	Windows	general purpose	2008
+			54788	Microsoft Windows 7 SP1	87	Microsoft	Windows	general purpose	7
+			54826	Microsoft Windows 7 SP1 or Windows Server 2008 SP1 - SP2	87	Microsoft	Windows	general purpose	7
+					87	Microsoft	Windows	general purpose	2008
+open	135	tcp	54458	Microsoft Windows 7 or Windows Server 2012	100	Microsoft	Windows	general purpose	7
+					100	Microsoft	Windows	general purpose	2012
+open	80	tcp	56574	Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7	93	Microsoft	Windows	general purpose	Vista
+					93	Microsoft	Windows	general purpose	2008
+					93	Microsoft	Windows	general purpose	7
+			54500	Microsoft Windows 7 Professional	92	Microsoft	Windows	general purpose	7
+			56887	Microsoft Windows Vista SP2, Windows 7 SP1, or Windows Server 2008	91	Microsoft	Windows	general purpose	Vista
+					91	Microsoft	Windows	general purpose	7
+					91	Microsoft	Windows	general purpose	2008
+			56039	Microsoft Windows Phone 7.5	91	Microsoft	Windows	phone	Phone
+			56427	Microsoft Windows Vista Home Premium SP1	89	Microsoft	Windows	general purpose	Vista
+			53730	Microsoft Windows Server 2008 SP1	88	Microsoft	Windows	general purpose	2008
+			56449	Microsoft Windows Vista Home Premium SP1, Windows 7, or Windows Server 2008	86	Microsoft	Windows	general purpose	Vista
+					86	Microsoft	Windows	general purpose	7
+					86	Microsoft	Windows	general purpose	2008
+			54788	Microsoft Windows 7 SP1	86	Microsoft	Windows	general purpose	7
+			56494	Microsoft Windows Vista SP0 - SP1	86	Microsoft	Windows	general purpose	Vista
+open	135	tcp	53602	Microsoft Windows Server 2008 Beta 3	100	Microsoft	Windows	general purpose	2008
+			54518	Microsoft Windows 7 Professional	100	Microsoft	Windows	general purpose	7
+			56039	Microsoft Windows Phone 7.5	100	Microsoft	Windows	phone	Phone
+			56574	Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7	100	Microsoft	Windows	general purpose	Vista
+					100	Microsoft	Windows	general purpose	2008
+					100	Microsoft	Windows	general purpose	7
+			56887	Microsoft Windows Vista SP2, Windows 7 SP1, or Windows Server 2008	100	Microsoft	Windows	general purpose	Vista
+					100	Microsoft	Windows	general purpose	7
+					100	Microsoft	Windows	general purpose	2008
+open	135	tcp	53602	Microsoft Windows Server 2008 Beta 3	100	Microsoft	Windows	general purpose	2008
+			56039	Microsoft Windows Phone 7.5	100	Microsoft	Windows	phone	Phone
+			56574	Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7	100	Microsoft	Windows	general purpose	Vista
+					100	Microsoft	Windows	general purpose	2008
+					100	Microsoft	Windows	general purpose	7
+			56887	Microsoft Windows Vista SP2, Windows 7 SP1, or Windows Server 2008	100	Microsoft	Windows	general purpose	Vista
+					100	Microsoft	Windows	general purpose	7
+					100	Microsoft	Windows	general purpose	2008
+open	22	tcp	44376	Linux 2.6.32 - 3.9	98	Linux	Linux	general purpose	2.6.X
+					98	Linux	Linux	general purpose	3.X
+			63671	Netgear DG834G WAP or Western Digital WD TV media player	96	Netgear	embedded	WAP	
+					96	Western Digital	embedded	media device	
+			44231	Linux 2.6.32 - 3.2	95	Linux	Linux	general purpose	2.6.X
+					95	Linux	Linux	general purpose	3.X
+			45597	Linux 2.6.38 - 3.5	95	Linux	Linux	general purpose	2.6.X
+					95	Linux	Linux	general purpose	3.X
+			48215	Linux 3.0 - 3.9	95	Linux	Linux	general purpose	3.X
+			43805	Linux 2.6.32	95	Linux	Linux	general purpose	2.6.X
+			39655	Linux 2.6.22	95	Linux	Linux	general purpose	2.6.X
+			45576	Linux 2.6.38 - 3.0	94	Linux	Linux	general purpose	2.6.X
+					94	Linux	Linux	general purpose	3.X
+			44668	Linux 2.6.35	94	Linux	Linux	general purpose	2.6.X
+			48434	Linux 3.2	94	Linux	Linux	general purpose	3.X
+										'OS:SCAN(V=6.46%E=4%D=11/25%OT=22%CT=1%CU=35898%PV=Y%DS=2%DC=I%G=Y%TM=5474EA
+OS:44%P=i686-pc-windows-windows)SEQ(SP=100%GCD=1%ISR=106%TI=Z%CI=I%II=I%TS=
+OS:8)OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5=M5
+OS:B4ST11NW6%O6=M5B4ST11)WIN(W1=3890%W2=3890%W3=3890%W4=3890%W5=3890%W6=389
+OS:0)ECN(R=Y%DF=Y%T=40%W=3908%O=M5B4NNSNW6%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S
+OS:+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=
+OS:)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%
+OS:A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%
+OS:DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=
+OS:40%CD=S)
+'
+open	135	tcp	53024	Microsoft Windows Server 2003 SP2	98	Microsoft	Windows	general purpose	2003	
+			61319	Microsoft Windows XP SP3	96	Microsoft	Windows	general purpose	XP	
+			59381	Microsoft Windows XP SP2 or SP3	96	Microsoft	Windows	general purpose	XP	
+			52182	Microsoft Windows Server 2003 SP1 or SP2	94	Microsoft	Windows	general purpose	2003	
+			51794	Microsoft Windows Server 2003 SP1	94	Microsoft	Windows	general purpose	2003	
+			57647	Microsoft Windows XP Professional SP2 or Windows Server 2003	93	Microsoft	Windows	general purpose	XP	
+					93	Microsoft	Windows	general purpose	2003	
+			50127	Microsoft Windows 2000 SP3/SP4 or Windows XP SP1/SP2	93	Microsoft	Windows	general purpose	2000	
+					93	Microsoft	Windows	general purpose	XP	
+			50096	Microsoft Windows 2000 SP2 - SP4, Windows XP SP2 - SP3, or Windows Server 2003 SP0 - SP2	92	Microsoft	Windows	general purpose	2000	
+					92	Microsoft	Windows	general purpose	XP	
+					92	Microsoft	Windows	general purpose	2003	
+			51304	Microsoft Windows 2000 SP4 or Windows XP SP2 - SP3	92	Microsoft	Windows	general purpose	2000	
+					92	Microsoft	Windows	general purpose	XP	
+			58013	Microsoft Windows XP SP2	92	Microsoft	Windows	general purpose	XP	
+										'OS:SCAN(V=6.46%E=4%D=11/25%OT=135%CT=1%CU=34349%PV=Y%DS=2%DC=I%G=Y%TM=5474E
+OS:A44%P=i686-pc-windows-windows)SEQ(SP=100%GCD=1%ISR=10D%TI=I%CI=I%II=I%SS
+OS:=S%TS=0)OPS(O1=M2300NW0NNT00NNS%O2=M2300NW0NNT00NNS%O3=M2300NW0NNT00%O4=
+OS:M2300NW0NNT00NNS%O5=M2300NW0NNT00NNS%O6=M2300NNT00NNS)WIN(W1=FAF0%W2=FAF
+OS:0%W3=FAF0%W4=FAF0%W5=FAF0%W6=FAF0)ECN(R=Y%DF=Y%T=80%W=FAF0%O=M2300NW0NNS
+OS:%CC=N%Q=)T1(R=Y%DF=Y%T=80%S=O%A=S+%F=AS%RD=0%Q=)T2(R=Y%DF=N%T=80%W=0%S=Z
+OS:%A=S%F=AR%O=%RD=0%Q=)T3(R=Y%DF=Y%T=80%W=FAF0%S=O%A=S+%F=AS%O=M2300NW0NNT
+OS:00NNS%RD=0%Q=)T4(R=Y%DF=N%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)T5(R=Y%DF=N%T=
+OS:80%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=N%T=80%W=0%S=A%A=O%F=R%O=%RD=0
+OS:%Q=)T7(R=Y%DF=N%T=80%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=80%IPL=B
+OS:0%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=S%T=80%CD=Z)
+'
+open	135	tcp	53784	Microsoft Windows Server 2008 SP1	96	Microsoft	Windows	general purpose	2008	
+			54005	Microsoft Windows Server 2008 SP2	96	Microsoft	Windows	general purpose	2008	
+			54178	Microsoft Windows 7	96	Microsoft	Windows	general purpose	7	
+			54612	Microsoft Windows 7 SP0 - SP1 or Windows Server 2008	96	Microsoft	Windows	general purpose	7	
+					96	Microsoft	Windows	general purpose	2008	
+			54657	Microsoft Windows 7 SP0 - SP1, Windows Server 2008 SP1, or Windows 8	96	Microsoft	Windows	general purpose	7	
+					96	Microsoft	Windows	general purpose	2008	
+					96	Microsoft	Windows	general purpose	8	
+			54867	Microsoft Windows 7 Ultimate	96	Microsoft	Windows	general purpose	7	
+			56473	Microsoft Windows Vista or Windows 7 SP1	96	Microsoft	Windows	general purpose	Vista	
+					96	Microsoft	Windows	general purpose	7	
+			56707	Microsoft Windows Vista SP1 - SP2 or Windows 7	96	Microsoft	Windows	general purpose	Vista	
+					96	Microsoft	Windows	general purpose	7	
+			56746	Microsoft Windows Vista SP2	96	Microsoft	Windows	general purpose	Vista	
+			56819	Microsoft Windows Vista SP2 or Windows 7 SP1	96	Microsoft	Windows	general purpose	Vista	
+					96	Microsoft	Windows	general purpose	7	
+										'OS:SCAN(V=6.46%E=4%D=11/25%OT=135%CT=1%CU=37749%PV=Y%DS=2%DC=I%G=Y%TM=5474E
+OS:A44%P=i686-pc-windows-windows)SEQ(SP=103%GCD=1%ISR=10A%TI=I%CI=I%II=I%SS
+OS:=S%TS=7)SEQ(SP=103%GCD=1%ISR=10A%TI=I%CI=I%TS=7)OPS(O1=M594NW8ST11%O2=M5
+OS:94NW8ST11%O3=M594NW8NNT11%O4=M594NW8ST11%O5=M594NW8ST11%O6=M594ST11)WIN(
+OS:W1=2000%W2=2000%W3=2000%W4=2000%W5=2000%W6=2000)ECN(R=Y%DF=Y%T=80%W=2000
+OS:%O=M594NW8NNS%CC=N%Q=)T1(R=Y%DF=Y%T=80%S=O%A=S+%F=AS%RD=0%Q=)T2(R=Y%DF=Y
+OS:%T=80%W=0%S=Z%A=S%F=AR%O=%RD=0%Q=)T3(R=Y%DF=Y%T=80%W=0%S=Z%A=O%F=AR%O=%R
+OS:D=0%Q=)T4(R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=80%W=0%
+OS:S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)T7(
+OS:R=Y%DF=Y%T=80%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=80%IPL=164%UN=0
+OS:%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=80%CD=Z)
+'
+open	80	tcp	54867	Microsoft Windows 7 Ultimate	100	Microsoft	Windows	general purpose	7	
+open	22	tcp	13984	Cisco Catalyst 1900, 2820, 2960, 3560, 3750, 4500, or 6513 switch (IOS 12.2)	100	Cisco	IOS	switch	12.X	

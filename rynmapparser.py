@@ -4,14 +4,16 @@ import xml.dom.minidom
 import sys
 import getopt
 import csv
+import re
 
 recurse = True
 filexml = 'test.xml'
 
-testtag = ['ports.port']
+# testtag = ['ports.port']
 # testtag = ['os.osmatch.name', 'address']
-# testtag = ['os.osmatch.name', 'address.addr']
+# testtag = ['address.addr', 'address.addrtype']
 # testtag = ['address', 'os', 'uptime']
+testtag = ['address.addr', 'uptime']
 # testtag = ['ports.extraports']
 # testtag = ['tcptssequence']
 # testtag = ['ports.extraports.extrareasons.reason', 'ports.extraports.extrareasons.count']
@@ -26,6 +28,7 @@ class Parser:
         except:
             sys.exit(2)
         self.__hostnodes = self.__dom.getElementsByTagName("host")
+        currentrow = list(defaultcurrentrow)
 
     def get_host_ip(self, nodein):
         n = nodein
@@ -59,6 +62,19 @@ class Parser:
         else:
             return 'neither'
 
+    def add_attribute_to_csv_row(self, attribute, value):
+        # if there's not a column for the current attribute yet, add it to the header row. Also add blank values to the
+        # row variables so the indexes for the new values is available for assignment.
+        if attribute not in cols:
+            global currentrow
+            cols.append(attribute)
+            defaultcurrentrow.append('')
+            currentrow.append('')
+        # If the current attribute hasn't already been filled for this row,
+        if currentrow[cols.index(attribute)] == '':
+            # add it to the current row.
+            currentrow[cols.index(attribute)] = re.sub(r'\n', ' ', str(value))
+
     # Responsible for the bulk of the data gathering.
     def get_tag_info(self, tagstogather='all', nodeslisttocomb=None, parentnodename=None, recursive=True):
         # The node list that this method is going to parse through. By default this is all the "host" nodes in the
@@ -66,7 +82,9 @@ class Parser:
         if nodeslisttocomb is None:
             nodeslisttocomb = self.__hostnodes
         attributetogather = []
+        global currentrow
         for node in nodeslisttocomb:
+            # set the new csv output row to have the appropriate number of columns.
             if nodeslisttocomb == self.__hostnodes:
                 # the 'parentnodename' string is used by this method to properly format the output. i.e.
                 # '10.0.0.1.address.addr'
@@ -85,15 +103,17 @@ class Parser:
                             # and has attributes
                             if subelement.hasAttributes():
                                 if recursive:
-                                    # add each of the attributes to the dictionary.
+                                    # add each of the attributes to the csv row.
                                     for attribute in subelement.attributes.items():
-                                        infodict.update({
-                                            str(parentnodename) + '.' + str(subelement.tagName) + '.' + str(
-                                                attribute[0]): str(attribute[1])})
+                                        self.add_attribute_to_csv_row(str(attribute[0]),str(attribute[1]))
+                                        # infodict.update({
+                                        #     str(parentnodename) + '.' + str(subelement.tagName) + '.' + str(
+                                        #         attribute[0]): str(attribute[1])})
                                 else:
                                     for attribute in attributetogather:
-                                        infodict.update({str(parentnodename) + '.' + str(attribute): str(
-                                            subelement.getAttribute(attribute))})
+                                        self.add_attribute_to_csv_row(str(attribute), str(subelement.getAttribute(attribute)))
+                                        # infodict.update({str(parentnodename) + '.' + str(attribute): str(
+                                        #     subelement.getAttribute(attribute))})
                             # If the function was called with "recursive = True" and if there are child nodes, dive in
                             # to them just like we did for the parent here .
                             if recursive and subelement.hasChildNodes():
@@ -130,115 +150,69 @@ class Parser:
                                 se = se.getElementsByTagName(dottedtag)[0]
                             # gather the attributes for the elements that have the tag specified
                             for attr in se.attributes.items():
-                                # save them to a dictionary. This may be temporary depending on how I decide to
-                                # manage the data that has been gathered.
+                                # and save them to the csv row
                                 if len(dottedtag.split('.')) > 1:
-                                    infodict.update({str(parentnodename) + '.' + str(attr[0]): str(attr[1])})
+                                    self.add_attribute_to_csv_row(str(attr[0]), str(attr[1]))
+                                    # infodict.update({str(parentnodename) + '.' + str(attr[0]): str(attr[1])})
                                 else:
-                                    infodict.update({
-                                        str(parentnodename) + '.' + dottedtag.split('.')[-1] + '.' + str(attr[0]): str(
-                                            attr[1])})
+                                    self.add_attribute_to_csv_row(str(attr[0]), str(attr[1]))
+                                    # infodict.update({
+                                    #     str(parentnodename) + '.' + dottedtag.split('.')[-1] + '.' + str(attr[0]): str(
+                                    #         attr[1])})
                             # gather all sub-info of this element. Not currently sure why this behaves correctly with
                             # regards to recursiveness since I don't have an 'if recursive' statement here. ???
                             self.get_tag_info('all', [se], parentnodename, recursive)
                             parentnodename = self.get_host_ip(node)
                         # if the dotted tag is a specific attribute of an element, grab that attribute's value and add
-                        # it to the dictionary
+                        # it to the csv row
                         elif toa == 'attribute':
                             se = subelement
                             for tag in dottedtag.split('.')[0:-1]:
                                 se = se.getElementsByTagName(tag)[0]
                                 parentnodename = parentnodename + '.' + tag
                             if se.getAttribute(dottedtag.split('.')[-1]):
-                                infodict.update({str(parentnodename) + '.' + str(dottedtag.split('.')[-1]): str(
-                                    se.getAttribute(dottedtag.split('.')[-1]))})
+                                # infodict.update({str(parentnodename) + '.' + str(dottedtag.split('.')[-1]): str(se.getAttribute(dottedtag.split('.')[-1]))})
+                                self.add_attribute_to_csv_row(str(dottedtag.split('.')[-1]), str(se.getAttribute(dottedtag.split('.')[-1])))
                                 parentnodename = self.get_host_ip(node)
                                 break
+            if currentrow != defaultcurrentrow:
+                csvout.writerow(currentrow)
+            currentrow = list(defaultcurrentrow)
 
-    def returncols(self, fieldlist):
-        #addressdict can store multiple types of addresses i.e. ipv4, ipv6, mac, etc.
-        addressesdict = {}
-        columndict = {}
-        for host in self.__hostnodes:
-            for field in fieldlist:
-                try:
-                    if field == "addresses":
-                        for address in host.getElementsByTagName("address"):
-                            addrtype = address.getAttribute("addrtype")
+# file argument code. Will be re-implemented once testing slows down.
+# try:
+#     opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["inputfile=", "outputfile="])
+# except getopt.GetoptError:
+#     print 'rynnmapparser.py -i <inputfile> -o [outputfile] '
+#     sys.exit(2)
+# for opt, arg in opts:
+#     if opt == '-h':
+#         print 'rynnmapparser.py -i <inputfile> -o [outputfile] '
+#         sys.exit()
+#     elif opt in ("-i", "--inputfile"):
+#         inputfile = arg
+#     elif opt in ("-o", "--outputfile"):
+#         outputfile = arg
 
-                            '''if there are multiple addresses of the same type, 
-                            keep them in the same cell and separate with a 
-                            newline. For instance, if there are multiple ip 
-                            addresses for a given host, this will be used.'''
-                            if addressesdict.has_key(addrtype):
-                                addressesdict.update(
-                                    {addrtype: addressesdict[addrtype] + "\n" + address.getAttribute("addr")})
-                            else:
-                                addressesdict.update({address.getAttribute("addrtype"): address.getAttribute("addr")})
-                    else:
-                        columndict.update({field: host.getElementByTagName(field)})
-                except:
-                    pass
 
-opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["inputfile=", "outputfile="])
-
-infodict = {}
+outputfile = 'testoutput.csv'
+#infodict = {}
+defaultcurrentrow = []
+currentrow = []
+cols = []
 myparser = Parser(filexml)
-myparser.get_tag_info(testtag, None, None, recurse)
+
+with open(outputfile, 'wb') as csvfile:
+    csvout = csv.writer(csvfile, delimiter = "," ,quotechar = '"', dialect = csv.QUOTE_NONE)
+    myparser.get_tag_info(testtag, None, None, recurse)
 # myparser.get_tag_info()
-print str(infodict)
+# print str(infodict)
 
+with open(outputfile, 'r') as csvfile:
+    original = csvfile.read()
+with open(outputfile, 'wb') as csvfile:
+    csvout = csv.writer(csvfile, delimiter = "," ,quotechar = '"', dialect = csv.QUOTE_NONE)
+    csvout.writerow(cols)
+with open(outputfile, 'a') as csvfile:
+    csvfile.write(original)
 sys.exit()
-'''except getopt.GetoptError:
-    print 'rynnmapparser.py -i <inputfile> -o [outputfile] '
-    sys.exit(2)
-for opt, arg in opts:
-    if opt == '-h':
-        print 'rynnmapparser.py -i <inputfile> -o [outputfile] '
-        sys.exit()
-    elif opt in ("-i", "--inputfile"):
-        inputfile = arg
-    elif opt in ("-o", "--outputfile"):
-        outputfile = arg
-
-doc = xml.dom.minidom.parse(inputfile)
-output = []
-
-with open(outputfile, 'w') as csvfile:
-    csvout = csv.writer(csvfile, delimiter=",",quotechar="'", quoting=csv.QUOTE_MINIMAL)
-    csvout.writerow(['State', 'IP', 'type', 'vendor', 'OS Family',
-                    'OS Generation', 'OS Class Accuracy', 'Name', 'CPE',
-                    'Name Accuracy'])
-    #go through every host element in the xml document
-    for host in doc.getElementsByTagName("host"):
-        ip = type = vendor = osfamily = osgen = osclassaccuracy = name = nameaccuracy = cpe = ''
-
-        oss = host.getElementsByTagName("os")
-        for st in host.getElementsByTagName("status"):
-            state = st.getAttribute("state")
-        for os in oss:
-            for osclass in os.getElementsByTagName("osclass"):
-                if type == '':
-                    type = osclass.getAttribute("type")
-                if vendor == '':
-                    vendor = osclass.getAttribute("vendor")
-                if osfamily == '':
-                    osfamily = osclass.getAttribute("osfamily")
-                if osgen == '':
-                    osgen = osclass.getAttribute("osgen")
-                if osclassaccuracy == '':
-                    osclassaccuracy = osclass.getAttribute("accuracy")
-                if cpe == '':
-                    try:
-                        cpe = osclass.getElementsByTagName("cpe")[0].childNodes[0].nodeValue
-                    except:
-                        pass
-            for osmatches in os.getElementsByTagName("osmatch"):
-                 name = osmatches.getAttribute("name")
-                 nameaccuracy = osmatches.getAttribute("accuracy")
-
-        output.append([str(state),str(ip),str(type),str(vendor),str(osfamily),str(osgen),str(osclassaccuracy),str(name),str(cpe),str(nameaccuracy)])
-    for row in output:
-        if row[0] is not '':
-            csvout.writerow(row)
-            print row'''

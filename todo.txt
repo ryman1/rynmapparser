@@ -1,6 +1,6 @@
 recursiveness level on get_tag_info()
 wildcard tag matches
-multiple tags in same request
+
 need to be able to gather multiple identical tags. i.e. <address> and <address> (maybe try making all the dictionary values in to lists?)
 break the dotted path stuff in to separate dictionaries.
 
@@ -8,3 +8,10 @@ break the dotted path stuff in to separate dictionaries.
 dictionaryname[address][os][osmatch][name] = [name1, name2, name3]
 
 list members of dictionaryname[address] returns os, address, etc
+
+make it so csv only has one row of multiple tags by default. Right now if I run the os tag recursively I get a ton of rows with different os matches for the same host. 
+
+clean up the clunky code that prepends the columns at the end of the run. it should probably be added as a method that's in the class.
+
+completed:
+multiple tags in same request
